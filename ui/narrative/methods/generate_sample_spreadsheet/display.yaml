@@ -1,0 +1,44 @@
+#
+# define display information
+#
+name: Generate sample spreadsheet
+
+tooltip: |
+    Generate sample spreadsheet
+
+screenshots: []
+
+icon: icon.png
+
+#
+# define a set of similar apps that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    object_type :
+        ui-name : |
+            Object Type
+        short-hint : |
+            Object Type, ex. Individual Sample
+    user_code :
+        ui-name : |
+            User Code
+        short-hint : |
+            user Code
+    output_name :
+        ui-name : |
+            Output name
+        short-hint : |
+            Output excel file name
+
+description : |
+    <p>This app generates sample screadsheet.</p>

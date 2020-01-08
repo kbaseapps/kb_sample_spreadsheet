@@ -1,0 +1,8 @@
+sampleSpreadsheetParams:
+  type: object
+  required: [object_type, user_code, output_name, workspace_name]
+  properties:
+    object_type: {type: string}
+    user_code: {type: string}
+    output_name: {type: string}
+    workspace_name: {type: string}
