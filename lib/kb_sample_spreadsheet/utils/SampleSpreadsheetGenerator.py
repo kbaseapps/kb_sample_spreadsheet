@@ -3,16 +3,16 @@ import time
 import jsonschema
 from pprint import pprint
 
-from kb_sample_spreadsheet.utils import schema, header
+from kb_sample_spreadsheet.utils import schema, column
 from installed_clients.KBaseReportClient import KBaseReport
 
 from openpyxl import Workbook
 from openpyxl.worksheet.datavalidation import DataValidation
-from openpyxl.utils import quote_sheetname
+from openpyxl.utils import get_column_letter
 from openpyxl.styles import NamedStyle, PatternFill, Font
 
 _SCHEMAS=schema.load_schemas()
-_HEADERS=header.load_headers()
+_COLUMNS=column.load_columns()
 
 class SampleSpreadsheetGenerator(object):
 
@@ -28,24 +28,24 @@ class SampleSpreadsheetGenerator(object):
     report_info=self.create_report(validated_params, spreashsheet_info)
     return report_info
 
-  def validate_params(self, params, schema):
+  def validate_params(self, params, schema_name):
     _params = _params=params.copy()
-    _schema = _SCHEMAS[schema]
+    _schema = _SCHEMAS[schema_name]
     try:
       jsonschema.validate(instance=_params, schema=_schema)
     except ValidationError as err:
       raise ValueError('Parameter validation error: ' + err.message)
     return _params
 
-  def generate_spreadsheet(self, validated_params, header):
+  def generate_spreadsheet(self, validated_params, template_name):
     spreadsheet_info={}
 
     output_dir=os.path.join(self.scratch_dir, 'sample_spreadsheet_' + str(int(time.time() * 10000)))
     output_filename=validated_params['output_name'] + '.xlsx'
     output_filepath=os.path.join(output_dir, output_filename)
     os.makedirs(output_dir)
-    
-    _header=_HEADERS[header]
+   
+    _column=_COLUMNS[template_name]
 
     common_font=Font(name='Arial', size=9)
     highlight_font=Font(name='Arial', size=9, bold=True)
@@ -65,10 +65,18 @@ class SampleSpreadsheetGenerator(object):
     ws['D1']=validated_params['user_code']
     ws['D1'].font=common_font
 
-    for c in range(1, len(_header)):
-      cell=ws.cell(row=2, column=c, value=_header[c-1])
+    for c in range(1, len(_column)+1):
+      _col=_column[c-1]
+      cell=ws.cell(row=2, column=c, value=_col['header'])
       cell.fill=header_fill
       cell.font=highlight_font
+      if 'type' in _col and _col['type']:
+        cl=get_column_letter(c)
+        dv=DataValidation(type=_col['type'], allow_blank=True)
+        dv.error ='Your entry is not ' + _col['type']
+        dv.errorTitle = 'Invalid Entry'
+        ws.add_data_validation(dv)
+        dv.add(cl + '3:' + cl + '1048576')
 
     wb.save(filename = output_filepath)
     spreadsheet_info['output_dir']=output_dir

@@ -1,0 +1,58 @@
+IGSN:
+  - 
+    header: Sample Name
+  - 
+    header: IGSN
+  - 
+    header: Parent IGSN
+  - 
+    header: Release Date
+    type: date
+  - 
+    header: Material
+  - 
+    header: Field name (informal classification)
+  - 
+    header: Location Description
+  - 
+    header: Locality Description
+  - 
+    header: Collection method
+  - 
+    header: Purpose
+  - 
+    header: Latitude
+    type: decimal
+  - 
+    header: Longitude
+    type: decimal
+  - 
+    header: Coordinate Precision?
+    type: whole
+  - 
+    header: Elevation start
+  - 
+    header: Elevation unit
+  - 
+    header: Navigation type
+  - 
+    header: Primary physiographic feature
+  - 
+    header: Name of physiographic feature
+  - 
+    header: Field program/cruise
+  - 
+    header: Collector/Chief Scientist
+  - 
+    header: Collection date
+    type: date
+  - 
+    header: Collection date precision
+  - 
+    header: Current archive
+  - 
+    header: Current archive contact
+  - 
+    header: Related Identifiers
+  - 
+    header: Relation Type
